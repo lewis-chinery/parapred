@@ -62,7 +62,8 @@ def single_run(dataset_file):
     compute_classifier_metrics([lbls_flat], [probs_flat])
 
 
-def full_run(dataset, out_weights="weights.h5"):
+def full_run(dataset, out_weights="weights_test1.h5"):
+    print(f"Location to save weights: {out_weights}")
     cache_file = dataset.split("/")[-1] + ".p"
     dataset = open_dataset(dataset, dataset_cache=cache_file)
     cdrs, lbls, masks = dataset["cdrs"], dataset["lbls"], dataset["masks"]
@@ -72,6 +73,7 @@ def full_run(dataset, out_weights="weights.h5"):
 
     rate_schedule = lambda e: 0.001 if e >= 10 else 0.01
 
+    print("*** Now starting to fit the model ***")
     model.fit([cdrs, np.squeeze(masks)],
               lbls, batch_size=32, epochs=18,
               sample_weight=sample_weight,
