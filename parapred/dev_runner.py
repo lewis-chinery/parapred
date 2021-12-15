@@ -249,4 +249,4 @@ def export_sequences(dataset):
 
 
 def main():
-    full_run("parapred/data/dataset.csv")
+    full_run("parapred/data/dataset_train.csv")
