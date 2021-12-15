@@ -49,7 +49,8 @@ def single_run(dataset_file):
                                          lbls_test, test_ex_weight),
                         sample_weight=example_weight,
                         callbacks=[LearningRateScheduler(rate_schedule),
-                                   EarlyStopping(verbose=1, patience=3)])
+                                   EarlyStopping(verbose=1, patience=3)
+])
 
     model.save_weights("sabdab.h5")
 
@@ -62,7 +63,8 @@ def single_run(dataset_file):
     compute_classifier_metrics([lbls_flat], [probs_flat])
 
 
-def full_run(dataset, out_weights="weights_test1.h5"):
+def full_run(dataset, out_weights="weights_test1.h5", val_dataset=None):
+    
     print(f"Location to save weights: {out_weights}")
     cache_file = dataset.split("/")[-1] + ".p"
     dataset = open_dataset(dataset, dataset_cache=cache_file)
@@ -72,12 +74,30 @@ def full_run(dataset, out_weights="weights_test1.h5"):
     model = ab_seq_model(dataset["max_cdr_len"])
 
     rate_schedule = lambda e: 0.001 if e >= 10 else 0.01
-
-    print("*** Now starting to fit the model ***")
-    model.fit([cdrs, np.squeeze(masks)],
-              lbls, batch_size=32, epochs=18,
-              sample_weight=sample_weight,
-              callbacks=[LearningRateScheduler(rate_schedule)])
+    
+    if val_dataset is None:
+        print("\n*** Now starting to fit the model (no val, stop after 18 epochs) ***\n")
+        model.fit([cdrs, np.squeeze(masks)],
+                  lbls, batch_size=32, epochs=18,
+                  sample_weight=sample_weight,
+                  callbacks=[LearningRateScheduler(rate_schedule)])
+        
+    else:
+        val_name = val_dataset
+        val_cache_file = val_dataset.split("/")[-1] + ".p"
+        val_dataset = open_dataset(val_dataset, dataset_cache=val_cache_file)
+        v_cdrs, v_lbls, v_masks = val_dataset["cdrs"], val_dataset["lbls"], val_dataset["masks"]
+        v_sample_weight = np.squeeze((v_lbls * 1.7 + 1) * v_masks)
+        
+        print(f"\n*** Now starting to fit the model (validating with {val_name}) ***\n")
+        model.fit([cdrs, np.squeeze(masks)],
+                  lbls, batch_size=32, epochs=150,
+                  validation_data=([v_cdrs, np.squeeze(v_masks)],
+                                    v_lbls, v_sample_weight),
+                  sample_weight=sample_weight,
+                  callbacks=[LearningRateScheduler(rate_schedule),
+                             EarlyStopping(verbose=1, patience=3)],
+                  verbose=2)
 
     model.save_weights(out_weights)
 
@@ -249,4 +269,6 @@ def export_sequences(dataset):
 
 
 def main():
-    full_run("parapred/data/dataset_train.csv")
+
+    # full_run("parapred/data/dataset_train.csv", out_weights="weights_test1.h5", val_dataset=None)
+    full_run("parapred/data/dataset_train.csv", out_weights="weights_PECAN.h5", val_dataset="parapred/data/dataset_val.csv")
