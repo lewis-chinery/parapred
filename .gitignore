@@ -6,6 +6,7 @@ runs/
 *.pdf
 *.eps
 *.ipynb
+!parapred/make_train_val_test_csvs.ipynb
 *.zip
 annotated/
 results/
