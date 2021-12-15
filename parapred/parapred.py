@@ -80,7 +80,7 @@ from .full_seq_processor import get_CDR_simple, NUM_EXTRA_RESIDUES, read_fasta
 
 MAX_CDR_LEN = 40  # For data encoding purposes only, feel free to increase 
 # WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights.h5")
-WEIGHTS = pkg_resources.resource_filename(__name__, "../weights_test1.h5")
+WEIGHTS = pkg_resources.resource_filename(__name__, "../weights_PECAN.h5")
 
 _model = None
 
