@@ -79,7 +79,8 @@ from .structure_processor import get_structure_from_pdb, extract_cdrs_from_struc
 from .full_seq_processor import get_CDR_simple, NUM_EXTRA_RESIDUES, read_fasta
 
 MAX_CDR_LEN = 40  # For data encoding purposes only, feel free to increase 
-WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights.h5")
+# WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights.h5")
+WEIGHTS = pkg_resources.resource_filename(__name__, "../weights_test1.h5")
 
 _model = None
 
@@ -210,6 +211,7 @@ def process_fasta_file(fastafile) :
 
 
 def main():
+    print(f"Using weights: {WEIGHTS}")
     arguments = docopt(__doc__, version='Parapred v1.0.1')
     if arguments["pdb"]:
         if arguments["<pdb_file>"]:
