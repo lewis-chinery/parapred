@@ -15,7 +15,8 @@ except ImportError:
         raise Exception("download_annotated_seq is not available because scrape module was not correctly imported"
                         " (missing lxml or requests dependencies?)")
 
-PDBS = "parapred/data/pdbs/{0}.pdb"
+# PDBS = "parapred/data/pdbs/{0}.pdb"
+PDBS = "../ABDB/entries/{}/structure/{}.pdb"
 MAX_CDR_LEN = 32  # 28 + 2 + 2
 
 
@@ -38,7 +39,8 @@ def load_chains(dataset_desc_filename, sequence_cache_file="parapred/precomputed
         if ab_h_chain == ab_l_chain:
             ab_l_chain = ab_l_chain.lower()
 
-        structure = get_structure_from_pdb(PDBS.format(pdb_name))
+#         structure = get_structure_from_pdb(PDBS.format(pdb_name))
+        structure = get_structure_from_pdb(PDBS.format(pdb_name, pdb_name))        
         model = structure[0]  # Structure only has one model
 
         if "|" in ag_chain:  # Several chains
@@ -51,6 +53,7 @@ def load_chains(dataset_desc_filename, sequence_cache_file="parapred/precomputed
 
         ag_chain_struct = None if "|" in ag_chain else model[ag_chain]
 
+        print(pdb_name)
         yield ag_search, model[ab_h_chain], model[ab_l_chain], \
               ag_chain_struct, sequences[pdb_name], (pdb_name, ab_h_chain, ab_l_chain)
 
