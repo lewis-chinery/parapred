@@ -7,6 +7,7 @@ runs/
 *.eps
 *.ipynb
 !parapred/make_train_val_test_csvs.ipynb
+!parapred/make_pickle_file_from_ABDB.ipynb
 *.zip
 annotated/
 results/
