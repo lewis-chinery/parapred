@@ -67,10 +67,10 @@ Options:
 """
 from __future__ import print_function
 
-from docopt import docopt
 from pandas import read_csv
 import numpy as np
 import pkg_resources
+from docopt import docopt
 
 from .structure_processor import get_structure_from_pdb, extract_cdrs_from_structure, \
     residue_seq_to_one, produce_annotated_ab_structure, save_structure, aa_s, \
@@ -80,7 +80,8 @@ from .full_seq_processor import get_CDR_simple, NUM_EXTRA_RESIDUES, read_fasta
 
 MAX_CDR_LEN = 40  # For data encoding purposes only, feel free to increase 
 # WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights.h5")
-WEIGHTS = pkg_resources.resource_filename(__name__, "../weights_PECAN.h5")
+# WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights_PECAN.h5")
+WEIGHTS = pkg_resources.resource_filename(__name__, "precomputed/weights_EXPANDED.h5")
 
 _model = None
 
