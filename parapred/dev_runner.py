@@ -270,5 +270,8 @@ def export_sequences(dataset):
 
 def main():
 
-    # full_run("parapred/data/dataset_train.csv", out_weights="weights_test1.h5", val_dataset=None)
-    full_run("parapred/data/dataset_train.csv", out_weights="weights_PECAN.h5", val_dataset="parapred/data/dataset_val.csv")
+#     full_run("parapred/data/dataset_train.csv", out_weights="weights_test1.h5", val_dataset=None)
+#     full_run("parapred/data/dataset_train.csv", out_weights="weights_PECAN.h5", val_dataset="parapred/data/dataset_val.csv")
+    full_run("parapred/data/dataset_train_BIG.csv",
+             out_weights="parapred/precomputed/weights_EXPANDED.h5",
+             val_dataset="parapred/data/dataset_val_BIG.csv")
