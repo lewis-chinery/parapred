@@ -6,6 +6,7 @@ runs/
 *.pdf
 *.eps
 *.ipynb
+!run_custom_pp_on_custom_test_set.ipynb
 !parapred/make_train_val_test_csvs.ipynb
 !parapred/make_pickle_file_from_ABDB.ipynb
 *.zip
@@ -18,3 +19,5 @@ junk/
 build/
 dist/
 **/*.pyc
+parapred/data/PECAN/*
+parapred/data/Expanded_dataset/*
